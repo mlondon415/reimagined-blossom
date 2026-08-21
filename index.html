@@ -26,6 +26,11 @@
   .topbar{display:flex;justify-content:space-between;align-items:center;margin:28px 0 8px;flex-wrap:wrap;gap:12px;}
   .search-box{flex:1;min-width:220px;}
   .search-box input{width:100%;padding:12px 16px;border:1px solid var(--rule);border-radius:8px;font-family:'Poppins',sans-serif;font-size:15px;background:#FDFCFA;}
+
+  .quicklinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+  .quicklinks a{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--rule);border-radius:20px;padding:8px 16px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--navy);text-decoration:none;transition:border-color .15s, background .15s;}
+  .quicklinks a:hover{border-color:var(--navy);background:var(--teal-bg);}
+  .quicklinks a::after{content:'↗';font-size:11px;opacity:.6;}
   .manage-link{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);background:transparent;border:1px solid var(--rule);padding:9px 14px;border-radius:6px;cursor:pointer;white-space:nowrap;}
   .manage-link:hover{border-color:var(--navy);color:var(--navy);}
 
@@ -85,6 +90,7 @@
       <circle cx="143" cy="7.5" r="1.1" class="flourish-dot"/>
     </svg>
     <p class="sub">Click any template below. Fill in any highlighted spots, then open it directly in Gmail — fully written and ready to review before you hit send.</p>
+    <div class="quicklinks" id="quickLinksBar"></div>
   </header>
 
   <div class="topbar">
@@ -104,7 +110,7 @@
 <script>
 // Default templates baked in as a fallback — used only if templates.json
 // can't be fetched (e.g. opened as a local file instead of via a real URL).
-const DEFAULT_TEMPLATES = {"categories":[{"name":"Initial Outreach & Scheduling","templates":[{"id":"invite-consult","name":"Consultation Invite","subject":"Thank you for reaching out — let's schedule your free consultation","body":"Hi [Client First Name],\n\nThank you for reaching out to Bloom Family Law. We'd love the opportunity to speak with you and answer your questions.\n\nYou can pick a time that works for you here:\n[Scheduling Link]\n\nIf you have any trouble finding a time, just reply to this email and we'll help you get scheduled.\n\nWe look forward to speaking with you.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"}]}]};
+const DEFAULT_TEMPLATES = {"attorneys":[],"senders":[],"alwaysBcc":[],"categories":[{"name":"Initial Outreach & Scheduling","templates":[{"id":"invite-consult","name":"Consultation Invite","subject":"Thank you for reaching out — let's schedule your free consultation","body":"Hi [Client First Name],\n\nThank you for reaching out to Bloom Family Law. We'd love the opportunity to speak with you and answer your questions.\n\nYou can pick a time that works for you here:\n[Scheduling Link]\n\nIf you have any trouble finding a time, just reply to this email and we'll help you get scheduled.\n\nWe look forward to speaking with you.\n\n[Signature]"}]}]};
 
 let DATA = null;
 let currentTemplate = null;
@@ -113,10 +119,18 @@ let currentFillIns = {};
 function loadTemplates(){
   fetch('templates.json', {cache:'no-store'})
     .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
-    .then(json => { DATA = json; renderTemplates(); })
-    .catch(() => { DATA = DEFAULT_TEMPLATES; renderTemplates(); });
+    .then(json => { DATA = json; renderTemplates(); renderQuickLinks(); })
+    .catch(() => { DATA = DEFAULT_TEMPLATES; renderTemplates(); renderQuickLinks(); });
 }
 loadTemplates();
+
+function renderQuickLinks(){
+  const host = document.getElementById('quickLinksBar');
+  const links = (DATA && DATA.quickLinks) || [];
+  host.innerHTML = links.map(l =>
+    `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`
+  ).join('');
+}
 
 function extractPlaceholders(text){
   const matches = [...text.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]);
@@ -169,11 +183,20 @@ function findTemplate(catName, id){
 <script>
 function esc(v){ return String(v===undefined||v===null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 
+// These tokens are handled by the Attorney/Sender dropdowns, not manual typing.
+const ATTORNEY_TOKENS = ['Scheduling Link', 'Attorney Name', 'Attorney Bio'];
+const SIGNATURE_TOKEN = 'Signature';
+
+let currentAttorneyEmail = '';
+let currentSenderEmail = '';
+
 function openTemplate(catName, id){
   const t = findTemplate(catName, id);
   if (!t) return;
   currentTemplate = { ...t, category: catName };
   currentFillIns = {};
+  currentAttorneyEmail = '';
+  currentSenderEmail = '';
 
   const placeholders = extractPlaceholders(t.subject + '\n' + t.body);
   renderModal(placeholders);
@@ -186,10 +209,38 @@ function closeModal(){
 
 function renderModal(placeholders){
   const t = currentTemplate;
-  const fillInsHtml = placeholders.length ? `
+  const needsAttorney = placeholders.some(p => ATTORNEY_TOKENS.includes(p));
+  const needsSignature = placeholders.includes(SIGNATURE_TOKEN);
+  const manualPlaceholders = placeholders.filter(p => !ATTORNEY_TOKENS.includes(p) && p !== SIGNATURE_TOKEN);
+
+  const attorneys = (DATA && DATA.attorneys) || [];
+  const senders = (DATA && DATA.senders) || [];
+
+  const attorneyHtml = needsAttorney ? `
+    <div class="field-group">
+      <label>Scheduling with</label>
+      <select id="attorneySelect" onchange="selectAttorney(this.value)" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:14px;background:#FDFCFA;">
+        <option value="">— Choose an attorney —</option>
+        ${attorneys.map(a => `<option value="${esc(a.name)}">${esc(a.name)}</option>`).join('')}
+      </select>
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:6px;">Auto-fills their scheduling link and bio, and adds them to CC.</div>
+    </div>
+  ` : '';
+
+  const senderHtml = needsSignature ? `
+    <div class="field-group">
+      <label>Sending as</label>
+      <select id="senderSelect" onchange="selectSender(this.value)" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:14px;background:#FDFCFA;">
+        <option value="">— Choose who's sending —</option>
+        ${senders.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('')}
+      </select>
+    </div>
+  ` : '';
+
+  const fillInsHtml = manualPlaceholders.length ? `
     <div class="fillins">
       <div class="fillins-title">Fill in before sending</div>
-      ${placeholders.map(p => `
+      ${manualPlaceholders.map(p => `
         <div class="field-group">
           <label>${esc(p)}</label>
           <input type="text" data-placeholder="${esc(p)}" oninput="updateFillIn('${esc(p).replace(/'/g,"\\'")}', this.value)" placeholder="Type ${esc(p).toLowerCase()}…">
@@ -212,9 +263,15 @@ function renderModal(placeholders){
       <input type="email" id="toField" placeholder="client@email.com" oninput="renderPreview()">
     </div>
 
+    ${attorneyHtml}
+    ${senderHtml}
     ${fillInsHtml}
 
     <div class="preview" id="previewBox"></div>
+
+    <div style="font-size:12px;color:var(--ink-soft);margin-bottom:14px;">
+      Every email automatically BCCs the office.${needsAttorney ? ' Selecting an attorney above adds them to CC.' : ''}
+    </div>
 
     <div class="modal-actions">
       <button class="primary" onclick="openInGmail()">✉ Open in Gmail</button>
@@ -222,6 +279,37 @@ function renderModal(placeholders){
     </div>
     <div class="copied-msg" id="copiedMsg">Copied to clipboard.</div>
   `;
+  renderPreview();
+}
+
+function selectAttorney(name){
+  const attorneys = (DATA && DATA.attorneys) || [];
+  const a = attorneys.find(x => x.name === name);
+  if (!a){
+    currentFillIns['Scheduling Link'] = '';
+    currentFillIns['Attorney Name'] = '';
+    currentFillIns['Attorney Bio'] = '';
+    currentAttorneyEmail = '';
+  } else {
+    currentFillIns['Scheduling Link'] = a.calendly || '';
+    currentFillIns['Attorney Name'] = a.name || '';
+    currentFillIns['Attorney Bio'] = a.bio || '';
+    currentAttorneyEmail = a.email || '';
+  }
+  renderPreview();
+}
+
+function selectSender(name){
+  const senders = (DATA && DATA.senders) || [];
+  const s = senders.find(x => x.name === name);
+  const notice = (DATA && DATA.confidentialityNotice) || '';
+  if (s){
+    currentFillIns['Signature'] = notice ? (s.signature || '') + '\n\n' + notice : (s.signature || '');
+    currentSenderEmail = s.email || '';
+  } else {
+    currentFillIns['Signature'] = '';
+    currentSenderEmail = '';
+  }
   renderPreview();
 }
 
@@ -258,11 +346,18 @@ function openInGmail(){
   const to = (document.getElementById('toField').value || '').trim();
   const subj = applyFillIns(t.subject, currentFillIns);
   const body = applyFillIns(t.body, currentFillIns);
+  const bccList = ((DATA && DATA.alwaysBcc) || [])
+    .filter(Boolean)
+    .filter(email => email.toLowerCase() !== (currentSenderEmail || '').toLowerCase());
+
   const params = new URLSearchParams({
     view: 'cm', fs: '1',
     su: subj, body: body
   });
   if (to) params.set('to', to);
+  if (currentAttorneyEmail) params.set('cc', currentAttorneyEmail);
+  if (bccList.length) params.set('bcc', bccList.join(','));
+
   const url = 'https://mail.google.com/mail/?' + params.toString();
   window.open(url, '_blank');
 }
@@ -292,6 +387,10 @@ function toggleManage(){
   document.getElementById('manageWrap').style.display = manageMode ? '' : 'none';
   if (manageMode){
     manageData = JSON.parse(JSON.stringify(DATA)); // working copy
+    if (!manageData.attorneys) manageData.attorneys = [];
+    if (!manageData.senders) manageData.senders = [];
+    if (!manageData.alwaysBcc) manageData.alwaysBcc = [];
+    if (!manageData.quickLinks) manageData.quickLinks = [];
     renderManage();
   }
 }
@@ -304,8 +403,8 @@ function renderManage(){
       <button class="manage-link" onclick="toggleManage()">✕ Close</button>
     </div>
     <p style="color:var(--ink-soft);font-size:13px;max-width:70ch;line-height:1.6;margin-bottom:16px;">
-      Edit anything below, then click <b>Download templates.json</b> at the bottom. Upload that file to the same GitHub folder as this page (replacing the old one) and commit — that updates the templates for everyone who uses this page, not just your browser.
-      Use square brackets like <code>[Client First Name]</code> for anything a staff member should fill in before sending.
+      Edit anything below, then click <b>Download templates.json</b> at the bottom. Upload that file to the same GitHub folder as this page (replacing the old one) and commit — that updates everything for everyone who uses this page, not just your browser.
+      Use square brackets like <code>[Client First Name]</code> for anything a staff member should type in before sending. <code>[Scheduling Link]</code>, <code>[Attorney Name]</code>, and <code>[Attorney Bio]</code> are filled automatically by the attorney dropdown below — don't make staff type those. Same for <code>[Signature]</code>, filled by the sender dropdown.
     </p>
 
     <div style="background:var(--teal-bg);border:1px solid var(--teal);border-radius:8px;padding:16px 18px;margin-bottom:24px;">
@@ -317,13 +416,110 @@ function renderManage(){
       <div id="uploadMsg" style="font-size:12px;margin-top:8px;display:none;"></div>
     </div>
 
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);">Quick Links</h2>
+    <p style="color:var(--ink-soft);font-size:13px;margin:0 0 14px;">The shortcut buttons shown at the top of the page. Each opens in a new tab.</p>
+    <div id="manageQuickLinks"></div>
+    <button class="secondary" onclick="addQuickLink()" style="margin-top:6px;">+ Add Link</button>
+
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);">Attorneys</h2>
+    <p style="color:var(--ink-soft);font-size:13px;margin:0 0 14px;">Each attorney's scheduling link, bio, and CC email — filled in automatically when a staff member picks them from the "Scheduling with" dropdown.</p>
+    <div id="manageAttorneys"></div>
+    <button class="secondary" onclick="addAttorney()" style="margin-top:6px;">+ Add Attorney</button>
+
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);">Senders & Signatures</h2>
+    <p style="color:var(--ink-soft);font-size:13px;margin:0 0 14px;">Whoever's sending picks their name from the "Sending as" dropdown, and their exact signature block gets inserted — paste it exactly as you want it to appear, line breaks and all.</p>
+    <div id="manageSenders"></div>
+    <button class="secondary" onclick="addSender()" style="margin-top:6px;">+ Add Sender</button>
+
+    <div class="field-group" style="margin-top:16px;">
+      <label>Confidentiality Notice (appended automatically to every signature — edit once, applies everywhere)</label>
+      <textarea id="confidentialityField" rows="4" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:13px;" oninput="manageData.confidentialityNotice = this.value">${esc(manageData.confidentialityNotice || '')}</textarea>
+    </div>
+
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);">Always BCC</h2>
+    <p style="color:var(--ink-soft);font-size:13px;margin:0 0 14px;">These addresses are BCC'd on every single email sent from this tool, automatically — no dropdown needed.</p>
+    <div id="manageBcc"></div>
+    <button class="secondary" onclick="addBcc()" style="margin-top:6px;">+ Add BCC Address</button>
+
+    <div class="perforation" style="height:1px;background:var(--rule);margin:32px 0;"></div>
+
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);">Templates</h2>
     <div id="manageCategories"></div>
     <button class="secondary" onclick="addCategory()" style="margin-top:10px;">+ Add Category</button>
     <div class="perforation" style="height:1px;background:var(--rule);margin:28px 0;"></div>
     <button class="primary" style="max-width:320px;" onclick="downloadTemplatesJson()">⬇ Download templates.json</button>
   `;
   renderManageCategories();
+  renderManageQuickLinks();
+  renderManageAttorneys();
+  renderManageSenders();
+  renderManageBcc();
 }
+
+function renderManageQuickLinks(){
+  const host = document.getElementById('manageQuickLinks');
+  host.innerHTML = manageData.quickLinks.map((l, i) => `
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <input type="text" value="${esc(l.name)}" oninput="updateQuickLinkField(${i},'name',this.value)" placeholder="Name" style="width:160px;padding:9px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:14px;">
+      <input type="text" value="${esc(l.url)}" oninput="updateQuickLinkField(${i},'url',this.value)" placeholder="https://…" style="flex:1;padding:9px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:14px;">
+      <button class="secondary" onclick="deleteQuickLink(${i})" style="border-color:var(--rust);color:var(--rust);padding:9px 14px;">✕</button>
+    </div>
+  `).join('') || '<p style="color:var(--ink-soft);font-size:13px;">No quick links added yet.</p>';
+}
+function updateQuickLinkField(i, field, val){ manageData.quickLinks[i][field] = val; }
+function deleteQuickLink(i){ manageData.quickLinks.splice(i,1); renderManageQuickLinks(); }
+function addQuickLink(){ manageData.quickLinks.push({name:'New Link', url:'https://'}); renderManageQuickLinks(); }
+
+function renderManageAttorneys(){
+  const host = document.getElementById('manageAttorneys');
+  host.innerHTML = manageData.attorneys.map((a, i) => `
+    <div style="border:1px solid var(--rule);border-radius:8px;padding:14px;margin-bottom:10px;background:#FBFAF6;">
+      <div class="field-group"><label>Name</label>
+        <input type="text" value="${esc(a.name)}" oninput="updateAttorneyField(${i},'name',this.value)"></div>
+      <div class="field-group"><label>Email (used for CC)</label>
+        <input type="email" value="${esc(a.email)}" oninput="updateAttorneyField(${i},'email',this.value)"></div>
+      <div class="field-group"><label>Calendly Link</label>
+        <input type="text" value="${esc(a.calendly)}" oninput="updateAttorneyField(${i},'calendly',this.value)"></div>
+      <div class="field-group"><label>Bio Paragraph</label>
+        <textarea rows="3" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:13px;" oninput="updateAttorneyField(${i},'bio',this.value)">${esc(a.bio)}</textarea></div>
+      <button class="secondary" onclick="deleteAttorney(${i})" style="border-color:var(--rust);color:var(--rust);">Delete Attorney</button>
+    </div>
+  `).join('') || '<p style="color:var(--ink-soft);font-size:13px;">No attorneys added yet.</p>';
+}
+function updateAttorneyField(i, field, val){ manageData.attorneys[i][field] = val; }
+function deleteAttorney(i){ manageData.attorneys.splice(i,1); renderManageAttorneys(); }
+function addAttorney(){ manageData.attorneys.push({name:'New Attorney', email:'', calendly:'', bio:''}); renderManageAttorneys(); }
+
+function renderManageSenders(){
+  const host = document.getElementById('manageSenders');
+  host.innerHTML = manageData.senders.map((s, i) => `
+    <div style="border:1px solid var(--rule);border-radius:8px;padding:14px;margin-bottom:10px;background:#FBFAF6;">
+      <div class="field-group"><label>Name</label>
+        <input type="text" value="${esc(s.name)}" oninput="updateSenderField(${i},'name',this.value)"></div>
+      <div class="field-group"><label>Email (used to skip BCC'ing themselves)</label>
+        <input type="email" value="${esc(s.email||'')}" oninput="updateSenderField(${i},'email',this.value)"></div>
+      <div class="field-group"><label>Signature Block</label>
+        <textarea rows="4" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:13px;" oninput="updateSenderField(${i},'signature',this.value)">${esc(s.signature)}</textarea></div>
+      <button class="secondary" onclick="deleteSender(${i})" style="border-color:var(--rust);color:var(--rust);">Delete Sender</button>
+    </div>
+  `).join('') || '<p style="color:var(--ink-soft);font-size:13px;">No senders added yet.</p>';
+}
+function updateSenderField(i, field, val){ manageData.senders[i][field] = val; }
+function deleteSender(i){ manageData.senders.splice(i,1); renderManageSenders(); }
+function addSender(){ manageData.senders.push({name:'New Sender', email:'', signature:''}); renderManageSenders(); }
+
+function renderManageBcc(){
+  const host = document.getElementById('manageBcc');
+  host.innerHTML = manageData.alwaysBcc.map((email, i) => `
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <input type="email" value="${esc(email)}" oninput="updateBccField(${i},this.value)" style="flex:1;padding:9px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:14px;">
+      <button class="secondary" onclick="deleteBcc(${i})" style="border-color:var(--rust);color:var(--rust);padding:9px 14px;">✕</button>
+    </div>
+  `).join('') || '<p style="color:var(--ink-soft);font-size:13px;">No BCC addresses added yet.</p>';
+}
+function updateBccField(i, val){ manageData.alwaysBcc[i] = val; }
+function deleteBcc(i){ manageData.alwaysBcc.splice(i,1); renderManageBcc(); }
+function addBcc(){ manageData.alwaysBcc.push(''); renderManageBcc(); }
 
 function handleTemplatesUpload(file){
   if (!file) return;
