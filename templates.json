@@ -1,0 +1,79 @@
+{
+  "categories": [
+    {
+      "name": "Initial Outreach & Scheduling",
+      "templates": [
+        {
+          "id": "invite-consult",
+          "name": "Consultation Invite",
+          "subject": "Thank you for reaching out — let's schedule your free consultation",
+          "body": "Hi [Client First Name],\n\nThank you for reaching out to Bloom Family Law. We'd love the opportunity to speak with you and answer your questions.\n\nYou can pick a time that works for you here:\n[Scheduling Link]\n\nIf you have any trouble finding a time, just reply to this email and we'll help you get scheduled.\n\nWe look forward to speaking with you.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        },
+        {
+          "id": "consult-confirmed",
+          "name": "Consultation Confirmed",
+          "subject": "You're confirmed for [Date] at [Time]",
+          "body": "Hi [Client First Name],\n\nYou're all set. Your free consultation with [Attorney Name] is confirmed for:\n\n[Date] at [Time]\n\n[Meeting Link or Address]\n\nIf anything comes up and you need to reschedule, just reply to this email or use this link:\n[Scheduling Link]\n\nWe look forward to speaking with you soon.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        },
+        {
+          "id": "consult-reminder",
+          "name": "Consultation Reminder (Day Before)",
+          "subject": "Reminder: your consultation is tomorrow at [Time]",
+          "body": "Hi [Client First Name],\n\nJust a friendly reminder that your free consultation with [Attorney Name] is scheduled for tomorrow, [Date], at [Time].\n\n[Meeting Link or Address]\n\nIf you need to reschedule, no problem — just use this link:\n[Scheduling Link]\n\nWe look forward to speaking with you.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        }
+      ]
+    },
+    {
+      "name": "Follow-Up",
+      "templates": [
+        {
+          "id": "missed-consult",
+          "name": "Missed Consultation — Reschedule",
+          "subject": "We missed you today — let's find a new time",
+          "body": "Hi [Client First Name],\n\nI hope you're doing okay. We had you scheduled for a free consultation with us today, and it looks like we weren't able to connect. Life gets busy, and we completely understand things come up.\n\nWe'd still love the opportunity to speak with you and answer any questions you have. If you'd like to reschedule, you can pick a new time that works for you here:\n\n[Scheduling Link]\n\nIf now isn't the right time, or if your situation has changed, no pressure at all — just let us know and we're happy to help whenever you're ready.\n\nLooking forward to connecting with you soon.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        },
+        {
+          "id": "no-response-1",
+          "name": "No Response — First Follow-Up",
+          "subject": "Checking in — still happy to help",
+          "body": "Hi [Client First Name],\n\nI wanted to follow up on my last email — I know things can get busy, so no worries if this slipped through the cracks.\n\nWe're still happy to schedule a free consultation whenever it's convenient for you:\n[Scheduling Link]\n\nIf you have any questions before then, feel free to just reply to this email.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        },
+        {
+          "id": "no-response-final",
+          "name": "No Response — Final Check-In",
+          "subject": "One last check-in from Bloom Family Law",
+          "body": "Hi [Client First Name],\n\nI wanted to reach out one last time in case now isn't the right moment, or your situation has changed since you first contacted us — either way, that's completely okay.\n\nIf you'd still like to talk, the door is always open, and you can schedule a free consultation any time here:\n[Scheduling Link]\n\nWishing you all the best either way.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        },
+        {
+          "id": "post-consult-followup",
+          "name": "Post-Consultation Follow-Up",
+          "subject": "Following up on our conversation",
+          "body": "Hi [Client First Name],\n\nIt was great speaking with you on [Date]. I wanted to follow up and see if you had any additional questions as you think through next steps.\n\nWhenever you're ready to move forward, or if you'd just like to talk through anything further, please don't hesitate to reach out.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        }
+      ]
+    },
+    {
+      "name": "Decision & Next Steps",
+      "templates": [
+        {
+          "id": "welcome-onboarding",
+          "name": "Welcome / What to Expect (New Client)",
+          "subject": "Welcome to Bloom Family Law — Next Steps",
+          "body": "Dear [Client First Name],\n\nThank you for choosing Bloom Family Law. We're glad to be working with you, and we want to make sure you know what to expect over the next few days.\n\nHere's what's coming next:\n\n1. MyCase will send you a separate email shortly, asking you to securely add a card on file. This is standard for all our clients and keeps your account ready for billing.\n2. LawPay, our secure payment processor, will also email you to set up your payment account. This is a normal part of our process — please don't hesitate to complete it, as it helps us serve you without delay.\n3. You'll also receive your Fee Agreement through MyCase, which you can review and sign electronically at your convenience.\n\nIf you have any questions about any of these emails, or anything else, please don't hesitate to reach out to our office.\n\nWe look forward to working with you.\n\nWarmly,\nBloom Family Law"
+        },
+        {
+          "id": "fee-agreement-sent",
+          "name": "Fee Agreement Sent",
+          "subject": "Your Fee Agreement is ready to sign",
+          "body": "Hi [Client First Name],\n\nYour Fee Agreement has been sent to you through MyCase for electronic signature. Please review it at your convenience, and let us know if you have any questions before signing.\n\nOnce it's signed, we'll be able to move forward with getting your case underway.\n\nThank you,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        },
+        {
+          "id": "not-moving-forward",
+          "name": "Thank You — Not Moving Forward",
+          "subject": "Thank you for considering Bloom Family Law",
+          "body": "Hi [Client First Name],\n\nThank you for taking the time to speak with us. We understand this is a significant decision, and we respect wherever you land.\n\nIf your circumstances change or you have further questions down the road, please don't hesitate to reach out — we're happy to help whenever it's the right time.\n\nWishing you all the best.\n\nWarmly,\n[Your Name]\nBloom Family Law, PC\n[Phone]"
+        }
+      ]
+    }
+  ]
+}
