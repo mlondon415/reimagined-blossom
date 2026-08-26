@@ -70,6 +70,16 @@
       "name": "Daniel",
       "signature": "Daniel Padilla\nBusiness Operations\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com",
       "email": "daniel@bloomlegalcoach.com"
+    },
+    {
+      "name": "Katie",
+      "email": "katie@bloomlegalcoach.com",
+      "signature": "Katie Padilla\nFounder and Attorney\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com"
+    },
+    {
+      "name": "Riena",
+      "email": "riena@bloomlegalcoach.com",
+      "signature": "Riena Yu\nAttorney\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com"
     }
   ],
   "alwaysBcc": [
@@ -126,6 +136,12 @@
           "name": "Post-Consultation Follow-Up",
           "subject": "Following up on our conversation",
           "body": "Hi [Client First Name],\n\nIt was great speaking with you on [Date]. I wanted to follow up and see if you had any additional questions as you think through next steps.\n\nWhenever you're ready to move forward, or if you'd just like to talk through anything further, please don't hesitate to reach out.\n\n[Signature]"
+        },
+        {
+          "id": "outstanding-balance",
+          "name": "Outstanding Balance",
+          "subject": "A Quick Note About Your Account Balance",
+          "body": "Hi [Client First Name],\n\nI hope you're doing well. I wanted to reach out regarding an outstanding balance of [Balance Amount] on your account.\n\nIf you have any questions about the balance or would like to discuss payment options, please don't hesitate to reach out — we're happy to help.\n\nThank you for your prompt attention to this.\n\n[Signature]"
         }
       ]
     },
@@ -149,6 +165,82 @@
           "name": "Thank You — Not Moving Forward",
           "subject": "Thank you for considering Bloom Family Law",
           "body": "Hi [Client First Name],\n\nThank you for taking the time to speak with us. We understand this is a significant decision, and we respect wherever you land.\n\nIf your circumstances change or you have further questions down the road, please don't hesitate to reach out — we're happy to help whenever it's the right time.\n\nWishing you all the best.\n\n[Signature]"
+        },
+        {
+          "id": "fee-agreement-followup",
+          "name": "Follow Up on Fee Agreement",
+          "subject": "Following Up on Your Fee Agreement",
+          "body": "Hi [Client First Name],\n\nI wanted to follow up and confirm you received the Fee Agreement we sent through MyCase. Please let us know if you have any questions before signing — we're happy to walk through anything that's unclear.\n\nOnce it's signed, we'll be able to move forward with getting your case underway.\n\nThank you,\n[Signature]"
+        },
+        {
+          "id": "client-close-out",
+          "name": "Client Close-Out",
+          "subject": "Wrapping Up Your Case",
+          "body": "Hi [Client First Name],\n\nWith your matter now resolved, we wanted to reach out and formally close out your file with our office.\n\nThank you for trusting us to guide you through this process. If you have any final questions, or if anything comes up down the road that you'd like our help with, please don't hesitate to reach out.\n\nWe wish you all the best moving forward.\n\nWarmly,\n[Signature]"
+        },
+        {
+          "id": "attorney-referral",
+          "name": "Referrals",
+          "variants": [
+            {
+              "name": "Katie — Attorney Referral",
+              "senderHint": "Katie",
+              "subject": "Referral Information",
+              "body": "Hi [Client Name],\n\nI hope you are doing well!\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [PMA] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nJenny Wald — 415-310-4194 — waldfamilylaw@gmail.com\nMaya Grey — 925-293-2144 — maya@greyfamlaw.com\nMeghan Lang — 510-629-9520 — meghan@northstarmediation.com\nHeather Mayer — 916-631-1996 — heather@mayeryoung.com\n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
+            },
+            {
+              "name": "Riena — Attorney Referral",
+              "senderHint": "Riena",
+              "subject": "Referral Information",
+              "body": "Hi [Client Name],\n\nI hope you are doing well!\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [PMA] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nAlexandra Martin: https://www.arcr.com/attorneys-staff/alexandra-r-martin/\nLauren Wanderman: https://wandermanfamilylaw.com/\nJill White: https://www.jillwhiteattorney.com/\nDiane Nguyen: https://www.cfk.com/attorney/nguyen-diane-b/\n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
+            },
+            {
+              "name": "Katie — Litigation Referral",
+              "senderHint": "Katie",
+              "subject": "Referral Information",
+              "body": "Hi [Client Name],\n\nI hope you are doing well!\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [Litigation Matter] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nDubroff, Easley & Lovell: https://www.dubrofflaw.com/\nAnne Mania — 510-239-1598 — anne@manialaw.net\nAlexandra Sepolen — 650-212-7861 — asepolen@swclfamilylaw.com\nBrittany Sturtevant — 925-327-6200 — bsturtevant@flickerkerin.com\n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
+            },
+            {
+              "name": "Riena — Litigation Referral",
+              "senderHint": "Riena",
+              "subject": "Attorney Referrals",
+              "body": "Hi [Client Name],\n\nAs we discussed, here is a list of attorneys who I think would be a good fit for you:\n\nSheila Bari: https://tcbflg.com/sheila-bari\nJessie Slafter: https://www.ckdfamilylaw.com/attorney/slafter-jessie/\nDubroff Law: https://www.dubrofflaw.com/\n\nWarmly,\n[Signature]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Client Care & Milestones",
+      "templates": [
+        {
+          "id": "wedding-congrats",
+          "name": "Congratulations on Your Wedding",
+          "subject": "Congratulations!",
+          "body": "Hi [Client First Name],\n\nCongratulations on your wedding! We're so happy for you and wanted to send our warmest wishes as you begin this new chapter together.\n\nIt was a pleasure working with you, and we wish you a lifetime of happiness.\n\nWarmly,\n[Signature]"
+        },
+        {
+          "id": "happy-birthday",
+          "name": "Happy Birthday",
+          "subject": "Happy Birthday!",
+          "body": "Hi [Client First Name],\n\nWishing you a very happy birthday! We hope your day is filled with all your favorite things.\n\nWarmly,\n[Signature]"
+        }
+      ]
+    },
+    {
+      "name": "Internal Emails",
+      "templates": [
+        {
+          "id": "new-client-retained",
+          "name": "New Client Retained",
+          "subject": "New Client Retained: [Client Name]",
+          "body": "Hi team,\n\nJust a quick note that [Client Name] has signed their Fee Agreement and is now officially retained with [Attorney Name].\n\nCase details:\n– Matter type: [Matter Type]\n– MyCase file created: [Yes/No]\n– Dropbox folder created: [Yes/No]\n\nLet me know if you have any questions.\n\n[Signature]"
+        },
+        {
+          "id": "office-announcement",
+          "name": "Office Announcement",
+          "subject": "Office Announcement",
+          "body": "Hi team,\n\n[Announcement details go here.]\n\nLet me know if you have any questions.\n\n[Signature]"
         }
       ]
     }
