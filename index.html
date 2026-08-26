@@ -18,6 +18,7 @@
     var(--sage-bg);
     color:var(--ink);font-family:'Poppins',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
   .wrap{max-width:920px;margin:0 auto;padding:40px 28px 80px;}
+  .brand-footer{text-align:center;padding:18px 20px;background:var(--sage-deep);color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;font-weight:500;}
   .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
   h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:34px;line-height:1.15;margin:0 0 8px;letter-spacing:-.01em;}
   .logo{height:52px;width:auto;display:block;margin-bottom:18px;}
@@ -28,14 +29,18 @@
   p.sub{color:var(--ink-soft);font-size:16px;max-width:66ch;line-height:1.55;margin:0;}
 
   .topbar{display:flex;justify-content:space-between;align-items:center;margin:28px 0 8px;flex-wrap:wrap;gap:12px;}
-  .search-box{flex:1;min-width:220px;}
+  .search-box{flex:1;min-width:220px;position:relative;}
+  .search-box::before{content:'';position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;border:2px solid var(--ink-soft);border-radius:50%;pointer-events:none;}
+  .search-box::after{content:'';position:absolute;left:24px;top:calc(50% + 7px);width:7px;height:2px;background:var(--ink-soft);transform:rotate(45deg);pointer-events:none;}
+  .search-box input{padding-left:40px;}
   .search-box input{width:100%;padding:12px 16px;border:2px solid var(--rule);border-radius:8px;font-family:'Poppins',sans-serif;font-size:15px;background:#FDFCFA;}
 
   .quicklinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
   .quicklinks a{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:2px solid var(--rule);border-radius:20px;padding:8px 16px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;transition:filter .15s, transform .1s;}
   .quicklinks a:hover{filter:brightness(0.92);transform:translateY(-1px);}
   .quicklinks a::after{content:'↗';font-size:11px;opacity:.6;}
-  .manage-link{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);background:transparent;border:1px solid var(--rule);padding:9px 14px;border-radius:6px;cursor:pointer;white-space:nowrap;}
+  .manage-link{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;background:var(--sage-deep);border:2px solid var(--sage-deep);padding:9px 16px;border-radius:6px;cursor:pointer;white-space:nowrap;}
+  .manage-link:hover{background:var(--navy-dark);border-color:var(--navy-dark);}
   .manage-link:hover{border-color:var(--navy);color:var(--navy);}
 
   .category{margin-top:28px;}
@@ -43,6 +48,10 @@
   .template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
   .template-card{background:var(--panel);border:2px solid var(--rule);border-radius:10px;padding:18px;cursor:pointer;transition:border-color .15s, transform .1s, background .15s;}
   .template-card:hover{border-color:var(--sage-deep);background:var(--sage-bg);transform:translateY(-1px);}
+  .template-card{display:flex;gap:14px;align-items:flex-start;}
+  .tcard-icon{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:var(--sage-bg);display:flex;align-items:center;justify-content:center;color:var(--sage-deep);}
+  .tcard-icon-svg{width:20px;height:20px;}
+  .tcard-body{min-width:0;flex:1;}
   .template-card .tname{font-weight:600;font-size:15px;margin-bottom:6px;}
   .template-card .tsubject{font-size:13px;color:var(--ink-soft);line-height:1.4;}
 
@@ -78,12 +87,6 @@
   .empty-state{padding:60px 20px;text-align:center;color:var(--ink-soft);font-size:15px;}
   .header-flex{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;}
   .header-text{flex:1;min-width:0;}
-  .header-decor{flex-shrink:0;opacity:.95;margin-top:-10px;}
-  .bloom-decor-stem{stroke:var(--sage-deep);stroke-width:3;fill:none;stroke-linecap:round;}
-  .bloom-decor-leaf{fill:var(--sage);}
-  .bloom-decor-petal{fill:#FFFFFF;stroke:var(--sage-deep);stroke-width:1;}
-  .bloom-decor-center{fill:#C79A3E;}
-  @media (max-width:720px){ .header-decor{display:none;} }
 </style>
 </head>
 <body>
@@ -104,27 +107,6 @@
       <circle cx="143" cy="7.5" r="1.1" class="flourish-dot"/>
     </svg>
     </div>
-
-    <div class="header-decor">
-      <svg width="150" height="200" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
-        <path class="bloom-decor-stem" d="M78 198 C 74 150, 95 120, 82 78"/>
-        <path class="bloom-decor-leaf" d="M80 148 C 58 142, 42 155, 36 175 C 62 175, 80 163, 80 148 Z" opacity="0.85"/>
-        <path class="bloom-decor-leaf" d="M85 112 C 108 106, 122 118, 128 138 C 102 137, 85 125, 85 112 Z" opacity="0.85"/>
-        <path class="bloom-decor-leaf" d="M79 84 C 60 77, 46 87, 42 102 C 65 102, 79 94, 79 84 Z" opacity="0.9"/>
-        <g transform="translate(80,44)">
-          <ellipse class="bloom-decor-petal" cx="0" cy="-22" rx="11" ry="21" transform="rotate(0)"/>
-          <ellipse class="bloom-decor-petal" cx="0" cy="-22" rx="11" ry="21" transform="rotate(60)"/>
-          <ellipse class="bloom-decor-petal" cx="0" cy="-22" rx="11" ry="21" transform="rotate(120)"/>
-          <ellipse class="bloom-decor-petal" cx="0" cy="-22" rx="11" ry="21" transform="rotate(180)"/>
-          <ellipse class="bloom-decor-petal" cx="0" cy="-22" rx="11" ry="21" transform="rotate(240)"/>
-          <ellipse class="bloom-decor-petal" cx="0" cy="-22" rx="11" ry="21" transform="rotate(300)"/>
-          <circle class="bloom-decor-center" cx="0" cy="0" r="8"/>
-        </g>
-        <g transform="translate(118,100)">
-          <ellipse class="bloom-decor-petal" cx="0" cy="0" rx="7" ry="12"/>
-        </g>
-      </svg>
-    </div>
     </div>
 
     <div class="quicklinks" id="quickLinksBar"></div>
@@ -140,6 +122,8 @@
   <div id="manageWrap" style="display:none;"></div>
 
 </div>
+
+<footer class="brand-footer">BREATHE. RELEASE. RECLAIM.</footer>
 
 <div class="overlay" id="overlay">
   <div class="modal" id="modalContent"></div>
@@ -184,16 +168,42 @@ function applyFillIns(text, fillIns){
   return out;
 }
 
+const CATEGORY_ICONS = {
+  "Initial Outreach & Scheduling": `<path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7l9 6l9-6"/>`,
+  "Follow-Up": `<path d="M17.65 6.35A8 8 0 1 0 19 13"/><polyline points="19 4 19 9 14 9"/>`,
+  "Decision & Next Steps": `<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="14 3 14 9 20 9"/><polyline points="9 15 11 17 15 13"/>`,
+  "Client Care & Milestones": `<path d="M12 21s-6.5-4.35-9-8.5C1.5 9 3 5.5 6.5 5.5c2 0 3.5 1.5 4 3c.5-1.5 2-3 4-3c3.5 0 5 3.5 3 7c-2.5 4.15-9 8.5-9 8.5z"/>`,
+  "Internal Emails": `<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>`,
+};
+const DEFAULT_ICON = CATEGORY_ICONS["Initial Outreach & Scheduling"];
+
+function categoryIconSvg(catName){
+  const inner = CATEGORY_ICONS[catName] || DEFAULT_ICON;
+  return `<svg class="tcard-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+}
+
+function cardSubjectText(t){
+  if (t.subject) return t.subject;
+  if (t.variants) return `${t.variants.length} options — pick one when you open it`;
+  return '';
+}
+
 function renderTemplates(){
   if (!DATA) return;
   const q = (document.getElementById('searchBox').value || '').trim().toLowerCase();
   const host = document.getElementById('templateList');
   let anyResults = false;
 
+  const matchesQuery = (t) => {
+    if (!q) return true;
+    if (t.name.toLowerCase().includes(q)) return true;
+    if (t.subject && t.subject.toLowerCase().includes(q)) return true;
+    if (t.variants && t.variants.some(v => v.name.toLowerCase().includes(q) || v.subject.toLowerCase().includes(q))) return true;
+    return false;
+  };
+
   const html = DATA.categories.map(cat => {
-    const templates = cat.templates.filter(t =>
-      !q || t.name.toLowerCase().includes(q) || t.subject.toLowerCase().includes(q)
-    );
+    const templates = cat.templates.filter(matchesQuery);
     if (!templates.length) return '';
     anyResults = true;
     return `<div class="category">
@@ -201,8 +211,11 @@ function renderTemplates(){
       <div class="template-grid">
         ${templates.map(t => `
           <div class="template-card" onclick="openTemplate('${esc(cat.name)}','${t.id}')">
-            <div class="tname">${esc(t.name)}</div>
-            <div class="tsubject">${esc(t.subject)}</div>
+            <div class="tcard-icon">${categoryIconSvg(cat.name)}</div>
+            <div class="tcard-body">
+              <div class="tname">${esc(t.name)}</div>
+              <div class="tsubject">${esc(cardSubjectText(t))}</div>
+            </div>
           </div>
         `).join('')}
       </div>
