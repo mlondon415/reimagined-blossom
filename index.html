@@ -8,11 +8,15 @@
 <style>
   :root{
     --paper:#F7F4EC; --panel:#FFFFFF; --ink:#26332F; --ink-soft:#5C6E68; --rule:#DDD5C2;
-    --navy:#2C4550; --navy-dark:#1E323C; --sage:#A9C4B8;
+    --navy:#2C4550; --navy-dark:#1E323C; --sage:#A9C4B8; --sage-bg:#EEF3EF; --sage-deep:#7FA593;
     --teal:#3F6673; --teal-bg:#E7EDE9; --amber:#96690F; --amber-bg:#FBF1DE; --rust:#A8402F; --rust-bg:#FAEAE6;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Poppins',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  body{margin:0;background:
+    radial-gradient(ellipse 1000px 500px at 100% 0%, rgba(169,196,184,.16), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 0% 100%, rgba(169,196,184,.10), transparent 55%),
+    var(--sage-bg);
+    color:var(--ink);font-family:'Poppins',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
   .wrap{max-width:920px;margin:0 auto;padding:40px 28px 80px;}
   .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
   h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:34px;line-height:1.15;margin:0 0 8px;letter-spacing:-.01em;}
@@ -35,10 +39,10 @@
   .manage-link:hover{border-color:var(--navy);color:var(--navy);}
 
   .category{margin-top:28px;}
-  .category h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);}
+  .category h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--sage);}
   .template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
-  .template-card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:18px;cursor:pointer;transition:border-color .15s, transform .1s;}
-  .template-card:hover{border-color:var(--navy);transform:translateY(-1px);}
+  .template-card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:18px;cursor:pointer;transition:border-color .15s, transform .1s, background .15s;}
+  .template-card:hover{border-color:var(--sage-deep);background:var(--sage-bg);transform:translateY(-1px);}
   .template-card .tname{font-weight:600;font-size:15px;margin-bottom:6px;}
   .template-card .tsubject{font-size:13px;color:var(--ink-soft);line-height:1.4;}
 
@@ -198,9 +202,40 @@ function openTemplate(catName, id){
   currentAttorneyEmail = '';
   currentSenderEmail = '';
 
-  const placeholders = extractPlaceholders(t.subject + '\n' + t.body);
-  renderModal(placeholders);
+  if (currentTemplate.variants){
+    // No variant chosen yet — the modal opens showing only the variant
+    // picker until one is selected, since each option is a fully
+    // different email (different attorney, different referral list).
+    currentTemplate.subject = '';
+    currentTemplate.body = '';
+    renderModal([]);
+  } else {
+    const placeholders = extractPlaceholders(t.subject + '\n' + t.body);
+    renderModal(placeholders);
+  }
   document.getElementById('overlay').classList.add('open');
+}
+
+function selectReferralVariant(name){
+  const variant = (currentTemplate.variants || []).find(v => v.name === name);
+  if (!variant) return;
+  currentTemplate.subject = variant.subject;
+  currentTemplate.body = variant.body;
+  currentFillIns = {};
+  currentSenderEmail = '';
+
+  const placeholders = extractPlaceholders(variant.subject + '\n' + variant.body);
+  renderModal(placeholders);
+
+  // Auto-select the matching sender (Katie's variants → Katie's signature, etc.)
+  // so the right person's name goes out without a second manual step.
+  if (variant.senderHint){
+    const sel = document.getElementById('senderSelect');
+    if (sel){
+      sel.value = variant.senderHint;
+      selectSender(variant.senderHint);
+    }
+  }
 }
 
 function closeModal(){
@@ -209,6 +244,33 @@ function closeModal(){
 
 function renderModal(placeholders){
   const t = currentTemplate;
+  const variantHtml = t.variants ? `
+    <div class="field-group" style="margin-top:16px;">
+      <label>Referral Type</label>
+      <select id="variantSelect" onchange="selectReferralVariant(this.value)" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:14px;background:#FDFCFA;">
+        <option value="">— Choose which referral —</option>
+        ${t.variants.map(v => `<option value="${esc(v.name)}" ${v.body === t.body ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}
+      </select>
+    </div>
+  ` : '';
+
+  // If this is a variant template and nothing's been picked yet, show only
+  // the picker — there's no email to preview or send until one is chosen.
+  if (t.variants && !t.body){
+    document.getElementById('modalContent').innerHTML = `
+      <div class="modal-head">
+        <div>
+          <div class="modal-cat">${esc(t.category)}</div>
+          <h3>${esc(t.name)}</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      ${variantHtml}
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:6px;">Each option is a different, fully-written email — pick one to preview it.</div>
+    `;
+    return;
+  }
+
   const needsAttorney = placeholders.some(p => ATTORNEY_TOKENS.includes(p));
   const needsSignature = placeholders.includes(SIGNATURE_TOKEN);
   const manualPlaceholders = placeholders.filter(p => !ATTORNEY_TOKENS.includes(p) && p !== SIGNATURE_TOKEN);
@@ -263,6 +325,7 @@ function renderModal(placeholders){
       <input type="email" id="toField" placeholder="client@email.com" oninput="renderPreview()">
     </div>
 
+    ${variantHtml}
     ${attorneyHtml}
     ${senderHtml}
     ${fillInsHtml}
@@ -584,20 +647,58 @@ function renderManageCategories(){
             <label>Template Name</label>
             <input type="text" value="${esc(t.name)}" oninput="updateTemplateField(${ci},${ti},'name',this.value)">
           </div>
-          <div class="field-group">
-            <label>Subject</label>
-            <input type="text" value="${esc(t.subject)}" oninput="updateTemplateField(${ci},${ti},'subject',this.value)">
-          </div>
-          <div class="field-group">
-            <label>Body</label>
-            <textarea rows="6" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:13px;" oninput="updateTemplateField(${ci},${ti},'body',this.value)">${esc(t.body)}</textarea>
-          </div>
-          <button class="secondary" onclick="deleteTemplate(${ci},${ti})" style="border-color:var(--rust);color:var(--rust);">Delete Template</button>
+          ${t.variants ? `
+            <div style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">This template has multiple variants (a dropdown picks which one loads) — edit each below.</div>
+            ${t.variants.map((v, vi) => `
+              <div style="border:1px solid var(--rule);border-radius:6px;padding:12px;margin-bottom:8px;background:var(--panel);">
+                <div class="field-group">
+                  <label>Variant Name (shown in the dropdown)</label>
+                  <input type="text" value="${esc(v.name)}" oninput="updateVariantField(${ci},${ti},${vi},'name',this.value)">
+                </div>
+                <div class="field-group">
+                  <label>Sender Hint (auto-selects this sender when chosen — must match a Sender name exactly, or leave blank)</label>
+                  <input type="text" value="${esc(v.senderHint||'')}" oninput="updateVariantField(${ci},${ti},${vi},'senderHint',this.value)">
+                </div>
+                <div class="field-group">
+                  <label>Subject</label>
+                  <input type="text" value="${esc(v.subject)}" oninput="updateVariantField(${ci},${ti},${vi},'subject',this.value)">
+                </div>
+                <div class="field-group">
+                  <label>Body</label>
+                  <textarea rows="6" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:13px;" oninput="updateVariantField(${ci},${ti},${vi},'body',this.value)">${esc(v.body)}</textarea>
+                </div>
+                <button class="secondary" onclick="deleteVariant(${ci},${ti},${vi})" style="border-color:var(--rust);color:var(--rust);">Delete This Variant</button>
+              </div>
+            `).join('')}
+            <button class="secondary" onclick="addVariant(${ci},${ti})">+ Add Variant</button>
+          ` : `
+            <div class="field-group">
+              <label>Subject</label>
+              <input type="text" value="${esc(t.subject)}" oninput="updateTemplateField(${ci},${ti},'subject',this.value)">
+            </div>
+            <div class="field-group">
+              <label>Body</label>
+              <textarea rows="6" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:13px;" oninput="updateTemplateField(${ci},${ti},'body',this.value)">${esc(t.body)}</textarea>
+            </div>
+          `}
+          <button class="secondary" onclick="deleteTemplate(${ci},${ti})" style="border-color:var(--rust);color:var(--rust);margin-top:8px;">Delete Template</button>
         </div>
       `).join('')}
       <button class="secondary" onclick="addTemplate(${ci})">+ Add Template to This Category</button>
     </div>
   `).join('');
+}
+
+function updateVariantField(ci, ti, vi, field, val){
+  manageData.categories[ci].templates[ti].variants[vi][field] = val;
+}
+function deleteVariant(ci, ti, vi){
+  manageData.categories[ci].templates[ti].variants.splice(vi, 1);
+  renderManageCategories();
+}
+function addVariant(ci, ti){
+  manageData.categories[ci].templates[ti].variants.push({ name: 'New Variant', senderHint: '', subject: '', body: '' });
+  renderManageCategories();
 }
 
 function updateCategoryName(ci, val){ manageData.categories[ci].name = val; }
