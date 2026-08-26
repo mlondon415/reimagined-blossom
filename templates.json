@@ -2,31 +2,38 @@
   "quickLinks": [
     {
       "name": "MyCase",
-      "url": "https://www.mycase.com/login/"
+      "url": "https://www.mycase.com/login/",
+      "color": "#D9A9A0"
     },
     {
       "name": "Asana",
-      "url": "https://app.asana.com/"
+      "url": "https://app.asana.com/",
+      "color": "#CB9375"
     },
     {
       "name": "Dropbox",
-      "url": "https://www.dropbox.com/home"
+      "url": "https://www.dropbox.com/home",
+      "color": "#9FB4C7"
     },
     {
       "name": "Clio Draft",
-      "url": "https://www.clio.com/login/"
+      "url": "https://www.clio.com/login/",
+      "color": "#CBA35C"
     },
     {
       "name": "Google Drive",
-      "url": "https://drive.google.com/"
+      "url": "https://drive.google.com/",
+      "color": "#A9C4B8"
     },
     {
       "name": "ChatGPT",
-      "url": "https://chatgpt.com/"
+      "url": "https://chatgpt.com/",
+      "color": "#B8A99A"
     },
     {
       "name": "Claude",
-      "url": "https://claude.ai/"
+      "url": "https://claude.ai/",
+      "color": "#C3AFC7"
     }
   ],
   "attorneys": [
