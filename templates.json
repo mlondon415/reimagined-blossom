@@ -3,37 +3,37 @@
     {
       "name": "MyCase",
       "url": "https://www.mycase.com/login/",
-      "color": "#D9A9A0"
+      "color": "#D6CBB3"
     },
     {
       "name": "Asana",
       "url": "https://app.asana.com/",
-      "color": "#CB9375"
+      "color": "#A8BFCF"
     },
     {
       "name": "Dropbox",
       "url": "https://www.dropbox.com/home",
-      "color": "#9FB4C7"
+      "color": "#A9C4B8"
     },
     {
       "name": "Clio Draft",
       "url": "https://www.clio.com/login/",
-      "color": "#CBA35C"
+      "color": "#B8ACC4"
     },
     {
       "name": "Google Drive",
       "url": "https://drive.google.com/",
-      "color": "#A9C4B8"
+      "color": "#8FAE9E"
     },
     {
       "name": "ChatGPT",
       "url": "https://chatgpt.com/",
-      "color": "#B8A99A"
+      "color": "#C9B896"
     },
     {
       "name": "Claude",
       "url": "https://claude.ai/",
-      "color": "#C3AFC7"
+      "color": "#C2B5CC"
     }
   ],
   "attorneys": [
