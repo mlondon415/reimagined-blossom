@@ -40,14 +40,14 @@
     {
       "name": "Katie",
       "email": "katie@bloomlegalcoach.com",
-      "calendly": "https://calendly.com/hey-katie/one-hour-meeting-w-katie",
-      "bio": "The first 20 minutes of your session are complimentary. If your consultation requires additional time beyond those initial 20 minutes, you will be billed for the extra time in 6-minute increments at Katie's regular rate of $550/hr. We will send you an invoice after your consultation if any balance is owed. Thank you in advance for your prompt payment.\n\nAs a Certified Family Law Specialist and 2026 Super Lawyer, Katie focuses on a holistic and collaborative approach to marital agreements. Rather than a purely transactional process, Katie uses her background as a trained coach to help couples navigate these conversations with empathy and transparency. Learn more about Katie's experience and philosophy: https://www.bloomlegalcoach.com/katiepadilla/"
+      "calendly": "https://calendly.com/hey-katie/initial-meeting-w-katie",
+      "bio": "As a Certified Family Law Specialist and 2026 Super Lawyer, Katie focuses on a holistic and collaborative approach to family matters. Whether you are looking for legal clarity or a more peaceful, solution-oriented approach to your matter, Katie uses her background as a trained coach to help couples navigate these conversations with empathy and transparency. Click here to learn more about Katie’s experience and philosophy."
     },
     {
       "name": "Riena",
       "email": "riena@bloomlegalcoach.com",
       "calendly": "https://calendly.com/riena-bloomlegalcoach/initial-consultation-zoom",
-      "bio": "The first 20 minutes of the consultation are free of charge. If you wish to continue beyond that point, extra time will be charged in 6-minute increments at Riena's rate of $475/hr. We will send you an invoice after your consultation if any balance is owed. Thank you in advance for your prompt payment.\n\nIf you decide to move forward with us after your consultation, you don't need to worry about a large upfront retainer—we work on an hourly basis, so you only pay for the time we actually spend on your matter.\n\nRiena is a 2024-2026 Northern California Rising Star recipient who specializes in collaborative marital agreements. Whether you are seeking asset protection or a transparent, solution-oriented process, her expertise ensures you are supported with both skill and compassion. Learn more about Riena's experience and qualifications: https://www.bloomlegalcoach.com/team/riena-yu/"
+      "bio": "Riena is a 2024-2026 Northern California Rising Star recipient who specializes in collaborative marital agreements. Whether you are seeking asset protection or a transparent, solution-oriented process, her expertise ensures you are supported with both skill and compassion. Click here to learn more about Riena's experience and qualifications. https://www.bloomlegalcoach.com/team/riena-yu/"
     },
     {
       "name": "Sam",
@@ -101,7 +101,7 @@
           "id": "invite-consult",
           "name": "Consultation Invite",
           "subject": "Thank you for reaching out to Bloom Family Law",
-          "body": "Thank you for reaching out to Bloom Family Law!\n\nTo get started, please use this link to schedule a consultation with [Attorney Name]: [Scheduling Link]\n\nYou can select your preferred format (Zoom or phone) when booking.\n\n[Attorney Bio]\n\nWe look forward to hearing more about your situation and discussing how we can help you move forward. Please reach out if you have any questions in the meantime.\n\nKind regards,\n[Signature]"
+          "body": "Thank you for reaching out to Bloom Family Law!\n\nTo get started, please use this link to schedule a consultation with [Attorney Name]: [Scheduling Link]\n\nYou can select your preferred format (Zoom or phone) when booking.\n\n[Attorney Bio]\n\nIf you decide to move forward with us after your consultation, you don't need to worry about a large upfront retainer—we work on an hourly basis, so you only pay for the time we actually spend on your matter.\n\nWe look forward to hearing more about your situation and discussing how we can help you move forward. Please reach out if you have any questions in the meantime.\n\nKind regards,\n[Signature]"
         },
         {
           "id": "consult-confirmed",
@@ -124,7 +124,7 @@
           "id": "missed-consult",
           "name": "Missed Consultation — Reschedule",
           "subject": "We missed you today — let's find a new time",
-          "body": "Hi [Client First Name],\n\nI hope you're doing okay. We had you scheduled for a free consultation with us today, and it looks like we weren't able to connect. Life gets busy, and we completely understand things come up.\n\nWe'd still love the opportunity to speak with you and answer any questions you have. If you'd like to reschedule, you can pick a new time that works for you here:\n\n[Scheduling Link]\n\nIf now isn't the right time, or if your situation has changed, no pressure at all — just let us know and we're happy to help whenever you're ready.\n\nLooking forward to connecting with you soon.\n\n[Signature]"
+          "body": "Hi [Client First Name],\n\nI hope you're doing okay. We had you scheduled for a complimentary consultation with [Attorney Name] today, and it looks like we weren't able to connect. Life gets busy, and we completely understand that things come up.\n\nWe'd still love the opportunity to speak with you and answer any questions you have. If you'd like to reschedule, you can pick a new time that works for you here:\n\n[Scheduling Link]\n\nIf now isn't the right time, or if your situation has changed, no pressure at all — just let us know, and we're happy to help whenever you're ready.\n\nLooking forward to connecting with you soon.\n\n[Signature]"
         },
         {
           "id": "no-response-1",
@@ -142,7 +142,7 @@
           "id": "post-consult-followup",
           "name": "Post-Consultation Follow-Up",
           "subject": "Following up on our conversation",
-          "body": "Hi [Client First Name],\n\nIt was great speaking with you on [Date]. I wanted to follow up and see if you had any additional questions as you think through next steps.\n\nWhenever you're ready to move forward, or if you'd just like to talk through anything further, please don't hesitate to reach out.\n\n[Signature]"
+          "body": "Hi [Client First Name],\n\nWe hope your consultation with [Attorney Name] provided clarity and reassurance as you consider your next steps. I wanted to follow up and see if you had any additional questions.\n\nWhenever you're ready to move forward, or if you'd just like to talk through anything further, please don't hesitate to reach out.\n\n[Signature]"
         },
         {
           "id": "outstanding-balance",
@@ -159,7 +159,7 @@
           "id": "welcome-onboarding",
           "name": "Welcome / What to Expect (New Client)",
           "subject": "Welcome to Bloom Family Law — Next Steps",
-          "body": "Dear [Client First Name],\n\nThank you for choosing Bloom Family Law. We're glad to be working with you, and we want to make sure you know what to expect over the next few days.\n\nHere's what's coming next:\n\n1. MyCase will send you a separate email shortly, asking you to securely add a card on file. This is standard for all our clients and keeps your account ready for billing.\n2. LawPay, our secure payment processor, will also email you to set up your payment account. This is a normal part of our process — please don't hesitate to complete it, as it helps us serve you without delay.\n3. You'll also receive your Fee Agreement through MyCase, which you can review and sign electronically at your convenience.\n\nIf you have any questions about any of these emails, or anything else, please don't hesitate to reach out to our office.\n\nWe look forward to working with you.\n\n[Signature]"
+          "body": "Dear [Client First Name],\n\nWe are excited to collaborate with you and assist with your case. Here's what we need to get started. \n\nPlease review the two emails we just sent to you. Once you review and sign, we can get started. \n\nHere's what's coming next:\n\n1. MyCase is our case management software. You will receive an email from them with a secure link to your Fee Agreement. Please review, then click the box above your name on the last page to sign. Once your attorney countersigns the agreement, you will receive a fully executed copy.\n2. LawPay, our secure payment processor, will also email you to set up your payment account. Most of our clients prefer the eCheck option to avoid the 3% processing fee for debit/credit card payments.\n\nPlease check your Spam folder if you do not see these links, and always feel free to reach out with any questions.\n\nWe look forward to working with you.\n\n[Signature]"
         },
         {
           "id": "fee-agreement-sent",
@@ -176,14 +176,14 @@
         {
           "id": "fee-agreement-followup",
           "name": "Follow Up on Fee Agreement",
-          "subject": "Following Up on Your Fee Agreement",
+          "subject": "Following Up on Your Fee Agreement- Bloom Family Law",
           "body": "Hi [Client First Name],\n\nI wanted to follow up and confirm you received the Fee Agreement we sent through MyCase. Please let us know if you have any questions before signing — we're happy to walk through anything that's unclear.\n\nOnce it's signed, we'll be able to move forward with getting your case underway.\n\nThank you,\n[Signature]"
         },
         {
           "id": "client-close-out",
           "name": "Client Close-Out",
-          "subject": "Wrapping Up Your Case",
-          "body": "Hi [Client First Name],\n\nWith your matter now resolved, we wanted to reach out and formally close out your file with our office.\n\nThank you for trusting us to guide you through this process. If you have any final questions, or if anything comes up down the road that you'd like our help with, please don't hesitate to reach out.\n\nWe wish you all the best moving forward.\n\nWarmly,\n[Signature]"
+          "subject": "Close Out Letter - Bloom Family Law",
+          "body": "Hi [Client First Name],\n\nWith your matter now resolved, we wanted to reach out and formally close out your file with our office.\n\nThank you for trusting us to guide you through this process. Please find attached your close-out letter for Bloom Family Law. It has been an honor to work with you.\n\nIf you have any final questions, or if anything comes up down the road that you'd like our help with, please don't hesitate to reach out.\n\nWe wish you all the best moving forward.\n\nWarmly,\n[Signature]"
         },
         {
           "id": "attorney-referral",
@@ -193,25 +193,25 @@
               "name": "Katie — Attorney Referral",
               "senderHint": "Katie",
               "subject": "Referral Information",
-              "body": "Hi [Client Name],\n\nI hope you are doing well!\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [PMA] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nJenny Wald — 415-310-4194 — waldfamilylaw@gmail.com\nMaya Grey — 925-293-2144 — maya@greyfamlaw.com\nMeghan Lang — 510-629-9520 — meghan@northstarmediation.com\nHeather Mayer — 916-631-1996 — heather@mayeryoung.com\n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
+              "body": "Hi [Client Name],\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [PMA] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nJenny Wald 415-310-4194 waldfamilylaw@gmail.com \nMaya Grey 925-293-2144 maya@greyfamlaw.com \nMeghan Lang 510-629-9520 meghan@northstarmediation.com \nHeather Mayer 916-631-1996 heather@mayeryoung.com \n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
             },
             {
               "name": "Riena — Attorney Referral",
               "senderHint": "Riena",
               "subject": "Referral Information",
-              "body": "Hi [Client Name],\n\nI hope you are doing well!\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [PMA] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nAlexandra Martin: https://www.arcr.com/attorneys-staff/alexandra-r-martin/\nLauren Wanderman: https://wandermanfamilylaw.com/\nJill White: https://www.jillwhiteattorney.com/\nDiane Nguyen: https://www.cfk.com/attorney/nguyen-diane-b/\n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
+              "body": "Hi [Client Name],\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [PMA] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nAlexandra Martin - https://www.arcr.com/attorneys-staff/alexandra-r-martin/\nLauren Wanderman - https://wandermanfamilylaw.com/\nJill White - https://www.jillwhiteattorney.com/\nDiane Nguyen - https://www.cfk.com/attorney/nguyen-diane-b/\n\nWe wish you the very best of luck with your case.\n\n\nWarmly,\n[Signature]"
             },
             {
               "name": "Katie — Litigation Referral",
               "senderHint": "Katie",
               "subject": "Referral Information",
-              "body": "Hi [Client Name],\n\nI hope you are doing well!\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [Litigation Matter] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nDubroff, Easley & Lovell: https://www.dubrofflaw.com/\nAnne Mania — 510-239-1598 — anne@manialaw.net\nAlexandra Sepolen — 650-212-7861 — asepolen@swclfamilylaw.com\nBrittany Sturtevant — 925-327-6200 — bsturtevant@flickerkerin.com\n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
+              "body": "Hi [Client Name],\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your [Litigation matter] at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nDubroff, Easley & Lovell https://www.dubrofflaw.com/ \nAnne Mania 510-239-1598 anne@manialaw.net  \nAlexandra Sepolen 650-212-7861 asepolen@swclfamilylaw.com \nBrittany Sturtevant 925-327-6200 bsturtevant@flickerkerin.com \n\nWe wish you the very best of luck with your case.\n\n\nWarmly,\n[Signature]"
             },
             {
               "name": "Riena — Litigation Referral",
               "senderHint": "Riena",
-              "subject": "Attorney Referrals",
-              "body": "Hi [Client Name],\n\nAs we discussed, here is a list of attorneys who I think would be a good fit for you:\n\nSheila Bari: https://tcbflg.com/sheila-bari\nJessie Slafter: https://www.ckdfamilylaw.com/attorney/slafter-jessie/\nDubroff Law: https://www.dubrofflaw.com/\n\nWarmly,\n[Signature]"
+              "subject": "Attorney Referral- Bloom Family Law",
+              "body": "Hi [Client Name],\n\nI am writing to let you know that, unfortunately, we won't be able to represent you in your matter at this time. We are very sorry that we cannot assist you with this specific matter.\n\nTo ensure you have the support you need, we have included four referrals for other professionals who may be able to help:\n\nJustine Joya: https://www.joyafamilylaw.com/about\nLulu Tseng: https://www.modernfamilylaw.com/our-attorneys/lulu-tseng/\nSheila Bari: www.tcbflg.com \nChristy, Keith & Donnell: https://www.ckdfamilylaw.com/\nAlexandra Sepolen: https://swclfamilylaw.com/about-us/\n\nWe wish you the very best of luck with your case.\n\nWarmly,\n[Signature]"
             }
           ]
         }
@@ -223,14 +223,14 @@
         {
           "id": "wedding-congrats",
           "name": "Congratulations on Your Wedding",
-          "subject": "Congratulations!",
-          "body": "Hi [Client First Name],\n\nCongratulations on your wedding! We're so happy for you and wanted to send our warmest wishes as you begin this new chapter together.\n\nIt was a pleasure working with you, and we wish you a lifetime of happiness.\n\nWarmly,\n[Signature]"
+          "subject": "Congratulations! From Bloom Family Law",
+          "body": "Hi [Client First Name],\n\nWe wanted to take a moment to send our warmest congratulations on your wedding!\n\nWhat a beautiful milestone—and such a wonderful opportunity to celebrate love, partnership, and the beginning of a new chapter together.\n\nWe hope your wedding day was filled with joy, laughter, and memories you'll treasure for years to come. May this next chapter bring you both kindness, growth, adventure, and many beautiful moments along the way.\n\nWishing you a lifetime of happiness together.\n\nWith warmest wishes,\nThe Bloom Family Law Team"
         },
         {
           "id": "happy-birthday",
           "name": "Happy Birthday",
-          "subject": "Happy Birthday!",
-          "body": "Hi [Client First Name],\n\nWishing you a very happy birthday! We hope your day is filled with all your favorite things.\n\nWarmly,\n[Signature]"
+          "subject": "Happy Birthday from Bloom Family Law!",
+          "body": "Hi [Client First Name],\n\nToday is about you, so we wanted to take a moment to wish you a very Happy Birthday!\n\nWherever this season of life finds you, we hope the year ahead brings moments of peace, meaningful growth, and plenty of reasons to look forward.\n\nMay this next chapter bring you closer to the life you want—and remind you of just how much possibility exists ahead.\n\nWishing you a beautiful birthday and a wonderful year to come.\n\nWith warmest wishes,\nThe Bloom Family Law Team"
         }
       ]
     },
