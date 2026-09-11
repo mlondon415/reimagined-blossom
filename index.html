@@ -451,7 +451,20 @@ function renderPreview(){
   `;
 }
 
+function getUnfilledPlaceholders(excludeTokens){
+  excludeTokens = excludeTokens || [];
+  const t = currentTemplate;
+  const placeholders = extractPlaceholders(t.subject + '\n' + t.body);
+  return placeholders.filter(p => !excludeTokens.includes(p) && !currentFillIns[p]);
+}
+
 function openInGmail(){
+  const unfilled = getUnfilledPlaceholders();
+  if (unfilled.length){
+    alert('Before sending, please fill in the following:\n\n' + unfilled.map(p => '• ' + p).join('\n') +
+      '\n\nCheck that you\'ve selected an attorney and/or sender above if this template needs one, and filled in every highlighted field in the preview.');
+    return;
+  }
   const t = currentTemplate;
   const to = (document.getElementById('toField').value || '').trim();
   const subj = applyFillIns(t.subject, currentFillIns);
@@ -461,10 +474,10 @@ function openInGmail(){
     .filter(email => email.toLowerCase() !== (currentSenderEmail || '').toLowerCase());
 
   const params = new URLSearchParams({
-    view: 'cm', fs: '1',
+    view: 'cm',
+    to: to,  // always included, even if empty, so Gmail shows a clean labeled "To" field rather than a possibly ambiguous layout when it's omitted
     su: subj, body: body
   });
-  if (to) params.set('to', to);
   if (currentAttorneyEmail) params.set('cc', currentAttorneyEmail);
   if (bccList.length) params.set('bcc', bccList.join(','));
 
@@ -473,8 +486,23 @@ function openInGmail(){
 }
 
 function copyBody(){
+  const unfilled = getUnfilledPlaceholders([SIGNATURE_TOKEN]); // Signature isn't copied, so it's not required here
+  if (unfilled.length){
+    alert('Before copying, please fill in the following:\n\n' + unfilled.map(p => '• ' + p).join('\n') +
+      '\n\nCheck that you\'ve selected an attorney above if this template needs one, and filled in every highlighted field in the preview.');
+    return;
+  }
   const t = currentTemplate;
-  const body = applyFillIns(t.body, currentFillIns);
+  // Copy Body intentionally omits the signature block and confidentiality
+  // notice. Deleting the Signature key (rather than setting it to '') means
+  // applyFillIns skips it entirely, leaving the literal "[Signature]" text
+  // in place — which we then strip directly. This avoids touching
+  // applyFillIns's own empty-string handling, which the live preview
+  // depends on to correctly highlight still-unfilled fields elsewhere.
+  const fillInsExceptSignature = { ...currentFillIns };
+  delete fillInsExceptSignature[SIGNATURE_TOKEN];
+  let body = applyFillIns(t.body, fillInsExceptSignature);
+  body = body.split('[' + SIGNATURE_TOKEN + ']').join('').trim();
   navigator.clipboard.writeText(body).then(() => {
     const msg = document.getElementById('copiedMsg');
     msg.style.display = 'block';
