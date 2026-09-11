@@ -54,39 +54,33 @@
       "email": "PASTE_SAM_EMAIL_HERE",
       "calendly": "PASTE_SAM_CALENDLY_LINK_HERE",
       "bio": "PASTE_SAM_BIO_PARAGRAPH_HERE"
-    },
-    {
-      "name": "Mark",
-      "email": "PASTE_MARK_EMAIL_HERE",
-      "calendly": "PASTE_MARK_CALENDLY_LINK_HERE",
-      "bio": "PASTE_MARK_BIO_PARAGRAPH_HERE"
     }
   ],
   "senders": [
     {
       "name": "Natalie",
-      "signature": "Natalie Coney (she/her)\nParalegal/Case Manager\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com",
+      "signature": "Natalie Coney (she/her)\nParalegal/Case Manager\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Bloom Family Law, PC | bloomlegalcoach.com",
       "email": "natalie@bloomlegalcoach.com"
     },
     {
       "name": "Maggie",
-      "signature": "Maggie London\nChief Operating Officer\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com",
+      "signature": "Maggie London\nChief Operating Officer\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Bloom Family Law, PC | bloomlegalcoach.com",
       "email": "maggie@bloomlegalcoach.com"
     },
     {
       "name": "Daniel",
-      "signature": "Daniel Padilla\nBusiness Operations\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com",
+      "signature": "Daniel Padilla\nBusiness Operations\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Bloom Family Law, PC | bloomlegalcoach.com",
       "email": "daniel@bloomlegalcoach.com"
     },
     {
       "name": "Katie",
       "email": "katie@bloomlegalcoach.com",
-      "signature": "Katie Padilla\nFounder and Attorney\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com"
+      "signature": "Katie Padilla (she/hers)\nCertified Family Law Specialist*\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Bloom Family Law, PC | bloomlegalcoach.com\nAs featured in Business Express\nAs featured in CEO Weekly\nAs featured in Business Insider\nAs featured in AP News\nAs featured in The Mamahood\nAs featured in California Observer"
     },
     {
       "name": "Riena",
       "email": "riena@bloomlegalcoach.com",
-      "signature": "Riena Yu\nAttorney\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Fax: 510.201.2266 | Bloom Family Law, PC | bloomlegalcoach.com"
+      "signature": "Riena Yu\nAttorney\n409 13th Street, Ste. 600 | Oakland | 94612\nPhone: 510.977.8393 | Bloom Family Law, PC | bloomlegalcoach.com"
     }
   ],
   "alwaysBcc": [
@@ -127,24 +121,6 @@
           "body": "Hi [Client First Name],\n\nI hope you're doing okay. We had you scheduled for a complimentary consultation with [Attorney Name] today, and it looks like we weren't able to connect. Life gets busy, and we completely understand that things come up.\n\nWe'd still love the opportunity to speak with you and answer any questions you have. If you'd like to reschedule, you can pick a new time that works for you here:\n\n[Scheduling Link]\n\nIf now isn't the right time, or if your situation has changed, no pressure at all — just let us know, and we're happy to help whenever you're ready.\n\nLooking forward to connecting with you soon.\n\n[Signature]"
         },
         {
-          "id": "no-response-1",
-          "name": "No Response — First Follow-Up",
-          "subject": "Checking in — still happy to help",
-          "body": "Hi [Client First Name],\n\nI wanted to follow up on my last email — I know things can get busy, so no worries if this slipped through the cracks.\n\nWe're still happy to schedule a free consultation whenever it's convenient for you:\n[Scheduling Link]\n\nIf you have any questions before then, feel free to just reply to this email.\n\n[Signature]"
-        },
-        {
-          "id": "no-response-final",
-          "name": "No Response — Final Check-In",
-          "subject": "One last check-in from Bloom Family Law",
-          "body": "Hi [Client First Name],\n\nI wanted to reach out one last time in case now isn't the right moment, or your situation has changed since you first contacted us — either way, that's completely okay.\n\nIf you'd still like to talk, the door is always open, and you can schedule a free consultation any time here:\n[Scheduling Link]\n\nWishing you all the best either way.\n\n[Signature]"
-        },
-        {
-          "id": "post-consult-followup",
-          "name": "Post-Consultation Follow-Up",
-          "subject": "Following up on our conversation",
-          "body": "Hi [Client First Name],\n\nWe hope your consultation with [Attorney Name] provided clarity and reassurance as you consider your next steps. I wanted to follow up and see if you had any additional questions.\n\nWhenever you're ready to move forward, or if you'd just like to talk through anything further, please don't hesitate to reach out.\n\n[Signature]"
-        },
-        {
           "id": "outstanding-balance",
           "name": "Outstanding Balance",
           "subject": "A Quick Note About Your Account Balance",
@@ -166,12 +142,6 @@
           "name": "Fee Agreement Sent",
           "subject": "Your Fee Agreement is ready to sign",
           "body": "Hi [Client First Name],\n\nYour Fee Agreement has been sent to you through MyCase for electronic signature. Please review it at your convenience, and let us know if you have any questions before signing.\n\nOnce it's signed, we'll be able to move forward with getting your case underway.\n\n[Signature]"
-        },
-        {
-          "id": "not-moving-forward",
-          "name": "Thank You — Not Moving Forward",
-          "subject": "Thank you for considering Bloom Family Law",
-          "body": "Hi [Client First Name],\n\nThank you for taking the time to speak with us. We understand this is a significant decision, and we respect wherever you land.\n\nIf your circumstances change or you have further questions down the road, please don't hesitate to reach out — we're happy to help whenever it's the right time.\n\nWishing you all the best.\n\n[Signature]"
         },
         {
           "id": "fee-agreement-followup",
