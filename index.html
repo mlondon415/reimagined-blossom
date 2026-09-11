@@ -432,15 +432,16 @@ function renderModal(placeholders){
     </div>
   ` : '';
 
-  const senderHtml = needsSignature ? `
+  const senderHtml = `
     <div class="field-group">
       <label>Sending as</label>
       <select id="senderSelect" onchange="selectSender(this.value)" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:14px;background:#FDFCFA;">
         <option value="">— Choose who's sending —</option>
         ${senders.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('')}
       </select>
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:6px;">Excludes you from your own BCC. After opening Gmail, click <b>Insert signature</b> in the compose toolbar to add your real signature.</div>
     </div>
-  ` : '';
+  `;
 
   const fillInsHtml = manualPlaceholders.length ? `
     <div class="fillins">
@@ -476,13 +477,14 @@ function renderModal(placeholders){
     <div class="preview" id="previewBox"></div>
 
     <div class="field-group" style="margin-top:16px;">
-      <label style="display:flex;align-items:center;gap:8px;font-weight:400;cursor:pointer;">
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400;cursor:pointer;margin-bottom:3px;">
         <input type="checkbox" id="teamBccCheck" style="width:auto;">
         Also BCC the entire team
       </label>
+      <div style="font-size:12px;color:var(--ink-soft);margin-left:26px;">Adds every team member's email to BCC on this message.</div>
     </div>
 
-    <div style="font-size:12px;color:var(--ink-soft);margin-bottom:14px;">
+    <div style="font-size:12px;color:var(--ink-soft);margin-top:14px;margin-bottom:14px;padding-top:14px;border-top:1px solid var(--rule);">
       Every email automatically BCCs the office.${needsAttorney ? ' Selecting an attorney above adds them to CC.' : ''}
     </div>
 
@@ -515,14 +517,7 @@ function selectAttorney(name){
 function selectSender(name){
   const senders = (DATA && DATA.senders) || [];
   const s = senders.find(x => x.name === name);
-  const notice = (DATA && DATA.confidentialityNotice) || '';
-  if (s){
-    currentFillIns['Signature'] = notice ? (s.signature || '') + '\n\n' + notice : (s.signature || '');
-    currentSenderEmail = s.email || '';
-  } else {
-    currentFillIns['Signature'] = '';
-    currentSenderEmail = '';
-  }
+  currentSenderEmail = s ? (s.email || '') : '';
   renderPreview();
 }
 
@@ -582,13 +577,16 @@ function openInGmail(){
   const unfilled = getUnfilledPlaceholders();
   if (unfilled.length){
     alert('Before sending, please fill in the following:\n\n' + unfilled.map(p => '• ' + p).join('\n') +
-      '\n\nCheck that you\'ve selected an attorney and/or sender above if this template needs one, and filled in every highlighted field in the preview.');
+      '\n\nCheck that you\'ve selected an attorney above if this template needs one, and filled in every highlighted field in the preview.');
     return;
   }
   const t = currentTemplate;
   const to = (document.getElementById('toField').value || '').trim();
   const subj = applyFillIns(t.subject, currentFillIns);
   const body = applyFillIns(t.body, currentFillIns);
+  // No confidentiality notice appended here — it's already part of
+  // everyone's real Gmail signature, which gets added manually via
+  // "Insert signature." Adding it here too would duplicate it.
   const bccList = buildBccList();
 
   const params = new URLSearchParams({
@@ -604,23 +602,17 @@ function openInGmail(){
 }
 
 function copyBody(){
-  const unfilled = getUnfilledPlaceholders([SIGNATURE_TOKEN]); // Signature isn't copied, so it's not required here
+  const unfilled = getUnfilledPlaceholders();
   if (unfilled.length){
     alert('Before copying, please fill in the following:\n\n' + unfilled.map(p => '• ' + p).join('\n') +
       '\n\nCheck that you\'ve selected an attorney above if this template needs one, and filled in every highlighted field in the preview.');
     return;
   }
   const t = currentTemplate;
-  // Copy Body intentionally omits the signature block and confidentiality
-  // notice. Deleting the Signature key (rather than setting it to '') means
-  // applyFillIns skips it entirely, leaving the literal "[Signature]" text
-  // in place — which we then strip directly. This avoids touching
-  // applyFillIns's own empty-string handling, which the live preview
-  // depends on to correctly highlight still-unfilled fields elsewhere.
-  const fillInsExceptSignature = { ...currentFillIns };
-  delete fillInsExceptSignature[SIGNATURE_TOKEN];
-  let body = applyFillIns(t.body, fillInsExceptSignature);
-  body = body.split('[' + SIGNATURE_TOKEN + ']').join('').trim();
+  // Copy Body intentionally does NOT append the confidentiality notice,
+  // matching the original request — copying is meant to grab just the
+  // core message text.
+  const body = applyFillIns(t.body, currentFillIns).trim();
   navigator.clipboard.writeText(body).then(() => {
     const msg = document.getElementById('copiedMsg');
     msg.style.display = 'block';
@@ -686,11 +678,6 @@ function renderManage(){
     <p style="color:var(--ink-soft);font-size:13px;margin:0 0 14px;">Whoever's sending picks their name from the "Sending as" dropdown, and their exact signature block gets inserted — paste it exactly as you want it to appear, line breaks and all.</p>
     <div id="manageSenders"></div>
     <button class="secondary" onclick="addSender()" style="margin-top:6px;">+ Add Sender</button>
-
-    <div class="field-group" style="margin-top:16px;">
-      <label>Confidentiality Notice (appended automatically to every signature — edit once, applies everywhere)</label>
-      <textarea id="confidentialityField" rows="4" style="width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-family:'Poppins',sans-serif;font-size:13px;" oninput="manageData.confidentialityNotice = this.value">${esc(manageData.confidentialityNotice || '')}</textarea>
-    </div>
 
     <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;color:var(--navy);margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);">Always BCC</h2>
     <p style="color:var(--ink-soft);font-size:13px;margin:0 0 14px;">These addresses are BCC'd on every single email sent from this tool, automatically — no dropdown needed.</p>
