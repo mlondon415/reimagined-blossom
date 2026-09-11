@@ -49,6 +49,14 @@
   .template-card{background:var(--panel);border:2px solid var(--rule);border-radius:10px;padding:18px;cursor:pointer;transition:border-color .15s, transform .1s, background .15s;}
   .template-card:hover{border-color:var(--sage-deep);background:var(--sage-bg);transform:translateY(-1px);}
   .template-card{display:flex;gap:14px;align-items:flex-start;}
+
+  /* --- Pin/Favorite + Recently Used shelves --- */
+  .template-card{position:relative;}
+  .pin-btn{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;padding:4px;line-height:0;color:var(--rule);z-index:2;}
+  .pin-btn.pinned{color:#D4A72C;}
+  .pin-btn svg{width:18px;height:18px;display:block;}
+  .shelf-section{margin-bottom:28px;}
+  .shelf-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
   .tcard-icon{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:var(--sage-bg);display:flex;align-items:center;justify-content:center;color:var(--sage-deep);}
   .tcard-icon-svg{width:20px;height:20px;}
   .tcard-body{min-width:0;flex:1;}
@@ -134,6 +142,65 @@
 const DEFAULT_TEMPLATES = {"attorneys":[],"senders":[],"alwaysBcc":[],"categories":[{"name":"Initial Outreach & Scheduling","templates":[{"id":"invite-consult","name":"Consultation Invite","subject":"Thank you for reaching out — let's schedule your free consultation","body":"Hi [Client First Name],\n\nThank you for reaching out to Bloom Family Law. We'd love the opportunity to speak with you and answer your questions.\n\nYou can pick a time that works for you here:\n[Scheduling Link]\n\nIf you have any trouble finding a time, just reply to this email and we'll help you get scheduled.\n\nWe look forward to speaking with you.\n\n[Signature]"}]}]};
 
 let DATA = null;
+
+// ============================================================
+// Pinned favorites + recently used (per-browser, via localStorage)
+// ============================================================
+const PINNED_KEY = 'bloomEmailTemplates_pinned';
+const RECENT_KEY = 'bloomEmailTemplates_recent';
+const MAX_RECENT = 6;
+
+function readStore(key){
+  try {
+    const raw = window.localStorage ? window.localStorage.getItem(key) : null;
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch(e){ return []; }
+}
+function writeStore(key, arr){
+  try { if (window.localStorage) window.localStorage.setItem(key, JSON.stringify(arr)); }
+  catch(e){ /* storage unavailable — fail silently, feature just won't persist */ }
+}
+function templateKey(catName, id){ return catName + '::' + id; }
+function getPinned(){ return readStore(PINNED_KEY); }
+function isPinned(catName, id){ return getPinned().indexOf(templateKey(catName, id)) !== -1; }
+function togglePin(catName, id, event){
+  if (event && event.stopPropagation) event.stopPropagation();
+  const key = templateKey(catName, id);
+  let pinned = getPinned();
+  if (pinned.indexOf(key) !== -1){
+    pinned = pinned.filter(function(k){ return k !== key; });
+  } else {
+    pinned = pinned.concat([key]);
+  }
+  writeStore(PINNED_KEY, pinned);
+  renderTemplates();
+}
+function getRecent(){ return readStore(RECENT_KEY); }
+function recordRecent(catName, id){
+  const key = templateKey(catName, id);
+  let recent = getRecent().filter(function(k){ return k !== key; });
+  recent.unshift(key);
+  writeStore(RECENT_KEY, recent.slice(0, MAX_RECENT));
+}
+function findTemplateByKey(key){
+  const idx = key.lastIndexOf('::');
+  if (idx === -1) return null;
+  const catName = key.slice(0, idx), id = key.slice(idx + 2);
+  const t = findTemplate(catName, id);
+  return t ? { t: t, catName: catName } : null;
+}
+function starIconSvg(filled){
+  return filled
+    ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>';
+}
+function pinBtnHtml(catName, id){
+  const pinned = isPinned(catName, id);
+  return '<button class="pin-btn' + (pinned ? ' pinned' : '') + '" title="' + (pinned ? 'Unpin' : 'Pin as favorite') +
+    '" onclick="togglePin(\'' + esc(catName) + '\',\'' + esc(id) + '\',event)">' + starIconSvg(pinned) + '</button>';
+}
+
 let currentTemplate = null;
 let currentFillIns = {};
 
@@ -188,6 +255,19 @@ function cardSubjectText(t){
   return '';
 }
 
+function templateCardHtml(catName, t){
+  return `
+    <div class="template-card" onclick="openTemplate('${esc(catName)}','${t.id}')">
+      ${pinBtnHtml(catName, t.id)}
+      <div class="tcard-icon">${categoryIconSvg(catName)}</div>
+      <div class="tcard-body">
+        <div class="tname">${esc(t.name)}</div>
+        <div class="tsubject">${esc(cardSubjectText(t))}</div>
+      </div>
+    </div>
+  `;
+}
+
 function renderTemplates(){
   if (!DATA) return;
   const q = (document.getElementById('searchBox').value || '').trim().toLowerCase();
@@ -202,6 +282,28 @@ function renderTemplates(){
     return false;
   };
 
+  // Pinned + Recently Used shelves — only when not actively searching, so
+  // they don't clutter filtered search results.
+  let shelvesHtml = '';
+  if (!q){
+    const pinnedKeys = getPinned();
+    const pinnedItems = pinnedKeys.map(findTemplateByKey).filter(Boolean);
+    if (pinnedItems.length){
+      shelvesHtml += `<div class="shelf-section">
+        <div class="shelf-title">★ Pinned</div>
+        <div class="template-grid">${pinnedItems.map(x => templateCardHtml(x.catName, x.t)).join('')}</div>
+      </div>`;
+    }
+    const recentKeys = getRecent().filter(k => pinnedKeys.indexOf(k) === -1);
+    const recentItems = recentKeys.map(findTemplateByKey).filter(Boolean);
+    if (recentItems.length){
+      shelvesHtml += `<div class="shelf-section">
+        <div class="shelf-title">Recently Used</div>
+        <div class="template-grid">${recentItems.map(x => templateCardHtml(x.catName, x.t)).join('')}</div>
+      </div>`;
+    }
+  }
+
   const html = DATA.categories.map(cat => {
     const templates = cat.templates.filter(matchesQuery);
     if (!templates.length) return '';
@@ -209,20 +311,13 @@ function renderTemplates(){
     return `<div class="category">
       <h2>${esc(cat.name)}</h2>
       <div class="template-grid">
-        ${templates.map(t => `
-          <div class="template-card" onclick="openTemplate('${esc(cat.name)}','${t.id}')">
-            <div class="tcard-icon">${categoryIconSvg(cat.name)}</div>
-            <div class="tcard-body">
-              <div class="tname">${esc(t.name)}</div>
-              <div class="tsubject">${esc(cardSubjectText(t))}</div>
-            </div>
-          </div>
-        `).join('')}
+        ${templates.map(t => templateCardHtml(cat.name, t)).join('')}
       </div>
+
     </div>`;
   }).join('');
 
-  host.innerHTML = anyResults ? html : `<div class="empty-state">No templates match "${esc(q)}".</div>`;
+  host.innerHTML = (shelvesHtml || anyResults) ? (shelvesHtml + html) : `<div class="empty-state">No templates match "${esc(q)}".</div>`;
 }
 
 function findTemplate(catName, id){
@@ -244,6 +339,7 @@ let currentSenderEmail = '';
 function openTemplate(catName, id){
   const t = findTemplate(catName, id);
   if (!t) return;
+  recordRecent(catName, id);
   currentTemplate = { ...t, category: catName };
   currentFillIns = {};
   currentAttorneyEmail = '';
@@ -379,6 +475,13 @@ function renderModal(placeholders){
 
     <div class="preview" id="previewBox"></div>
 
+    <div class="field-group" style="margin-top:16px;">
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400;cursor:pointer;">
+        <input type="checkbox" id="teamBccCheck" style="width:auto;">
+        Also BCC the entire team
+      </label>
+    </div>
+
     <div style="font-size:12px;color:var(--ink-soft);margin-bottom:14px;">
       Every email automatically BCCs the office.${needsAttorney ? ' Selecting an attorney above adds them to CC.' : ''}
     </div>
@@ -458,6 +561,23 @@ function getUnfilledPlaceholders(excludeTokens){
   return placeholders.filter(p => !excludeTokens.includes(p) && !currentFillIns[p]);
 }
 
+function buildBccList(){
+  const always = ((DATA && DATA.alwaysBcc) || []).filter(Boolean);
+  const teamChecked = document.getElementById('teamBccCheck') && document.getElementById('teamBccCheck').checked;
+  const teamEmails = teamChecked
+    ? ((DATA && DATA.senders) || []).map(s => s.email).filter(Boolean)
+    : [];
+  const combined = [...always, ...teamEmails]
+    .map(e => e.trim())
+    .filter(Boolean)
+    // de-dupe case-insensitively, and always exclude the current sender's own address
+    .filter((email, idx, arr) =>
+      arr.findIndex(e => e.toLowerCase() === email.toLowerCase()) === idx &&
+      email.toLowerCase() !== (currentSenderEmail || '').toLowerCase()
+    );
+  return combined;
+}
+
 function openInGmail(){
   const unfilled = getUnfilledPlaceholders();
   if (unfilled.length){
@@ -469,9 +589,7 @@ function openInGmail(){
   const to = (document.getElementById('toField').value || '').trim();
   const subj = applyFillIns(t.subject, currentFillIns);
   const body = applyFillIns(t.body, currentFillIns);
-  const bccList = ((DATA && DATA.alwaysBcc) || [])
-    .filter(Boolean)
-    .filter(email => email.toLowerCase() !== (currentSenderEmail || '').toLowerCase());
+  const bccList = buildBccList();
 
   const params = new URLSearchParams({
     view: 'cm',
