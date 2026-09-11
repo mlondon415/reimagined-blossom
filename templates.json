@@ -148,7 +148,7 @@
           "id": "outstanding-balance",
           "name": "Outstanding Balance",
           "subject": "A Quick Note About Your Account Balance",
-          "body": "Hi [Client First Name],\n\nI hope you're doing well. I wanted to reach out regarding an outstanding balance of [Balance Amount] on your account.\n\nIf you have any questions about the balance or would like to discuss payment options, please don't hesitate to reach out — we're happy to help.\n\nThank you for your prompt attention to this.\n\n[Signature]"
+          "body": "Hi [Client First Name],\n\nI hope you're doing well. I wanted to reach out regarding an outstanding balance of $[Balance Amount] on your account.\n\nIf you have any questions about the balance or would like to discuss payment options, please don't hesitate to reach out — we're happy to help.\n\nThank you for your prompt attention to this.\n\n[Signature]"
         }
       ]
     },
